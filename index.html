@@ -15,10 +15,16 @@
 <!-- ===== HEADER ===== -->
 <header class="site-header">
   <nav class="main-nav">
-    <ul class="nav-side nav-left">
+    <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-side nav-left" id="nav-menu">
       <li><a href="#coleccion">Colección</a></li>
       <li><a href="#exclusivas">Exclusivas</a></li>
       <li><a href="#aromas">Aromas</a></li>
+      <li class="nav-mobile-only"><a href="#historia">Nuestra historia</a></li>
+      <li class="nav-mobile-only"><a href="#contacto">Encargos</a></li>
     </ul>
 
     <a href="#top" class="brand">
@@ -28,23 +34,46 @@
           <path d="M20 9 C20 9 14 18 14 23 a6 6 0 0 0 12 0 C26 18 20 9 20 9 Z" fill="currentColor"/>
         </svg>
       </span>
-      <span class="brand-name">Ánima</span>
+      <span class="brand-name">Messina</span>
     </a>
 
     <ul class="nav-side nav-right">
-      <li><a href="#historia">Nuestro oficio</a></li>
-      <li><a href="#contacto">Encargos</a></li>
-      <li><a href="#carrito" class="nav-cart" aria-label="Carrito">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4">
-          <path d="M3 6h2l2.4 11.2a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L20 8H6"/>
-          <circle cx="9.5" cy="20.5" r="1"/>
-          <circle cx="17.5" cy="20.5" r="1"/>
-        </svg>
-        <span class="cart-count">0</span>
-      </a></li>
+      <li class="nav-desktop-only"><a href="#historia">Nuestra historia</a></li>
+      <li class="nav-desktop-only"><a href="#contacto">Encargos</a></li>
+      <li>
+        <button class="nav-cart" type="button" id="cart-toggle" aria-label="Ver carrito" aria-expanded="false" aria-controls="cart-panel">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M3 6h2l2.4 11.2a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L20 8H6"/>
+            <circle cx="9.5" cy="20.5" r="1"/>
+            <circle cx="17.5" cy="20.5" r="1"/>
+          </svg>
+          <span class="cart-count">0</span>
+        </button>
+      </li>
     </ul>
   </nav>
 </header>
+
+<!-- ===== CARRITO: overlay + panel lateral ===== -->
+<div class="cart-overlay" id="cart-overlay" hidden></div>
+<aside class="cart-panel" id="cart-panel" aria-label="Carrito de compras" aria-hidden="true">
+  <div class="cart-panel-head">
+    <h2 class="cart-panel-title">Tu carrito</h2>
+    <button class="cart-close" id="cart-close" type="button" aria-label="Cerrar carrito">✕</button>
+  </div>
+
+  <div class="cart-items" id="cart-items">
+    <p class="cart-empty" id="cart-empty">Todavía no agregaste ninguna vela.</p>
+  </div>
+
+  <div class="cart-panel-foot">
+    <div class="cart-total-row">
+      <span>Total</span>
+      <span id="cart-total">$0</span>
+    </div>
+    <button class="hero-cta cart-checkout" type="button">Finalizar pedido</button>
+  </div>
+</aside>
 
 <!-- ===== HERO ===== -->
 <section class="hero" id="top">
@@ -84,46 +113,95 @@
   </div>
 </section>
 
+<!-- ===== COMPRA INTELIGENTE ===== -->
+<section class="perks" aria-label="Beneficios de compra">
+  <div class="perks-inner">
+    <p class="perks-label">Compra inteligente</p>
+
+    <div class="perks-grid">
+      <div class="perk">
+        <span class="perk-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3">
+            <path d="M3 10h18M7 15h2M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z"/>
+          </svg>
+        </span>
+        <div class="perk-text">
+          <p class="perk-title">Descuento por transferencia</p>
+          <p class="perk-desc">Pagás por transferencia bancaria y accedés a un precio preferencial en toda la colección.</p>
+        </div>
+      </div>
+
+      <div class="perk">
+        <span class="perk-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3">
+            <path d="M3 17h2l1-5h11l2 5h2M6 12V8a1 1 0 0 1 1-1h6l3 5M7 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm11 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+          </svg>
+        </span>
+        <div class="perk-text">
+          <p class="perk-title">Envíos en Buenos Aires</p>
+          <p class="perk-desc">Llegamos a cualquier punto en compras desde $40.000.</p>
+        </div>
+      </div>
+
+      <div class="perk">
+        <span class="perk-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3">
+            <path d="M12 3v3M12 18v3M5 5l2 2M17 17l2 2M3 12h3M18 12h3M5 19l2-2M17 7l2-2"/>
+            <circle cx="12" cy="12" r="3.5"/>
+          </svg>
+        </span>
+        <div class="perk-text">
+          <p class="perk-title">Piezas que no se repiten</p>
+          <p class="perk-desc">Ediciones reducidas: comprar a tiempo es la única forma de conseguirlas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===== TIENDA: SIDEBAR + GRID ===== -->
 <section class="shop" id="coleccion">
 
   <aside class="filters" aria-label="Filtrar velas">
     <h2 class="filters-title">El altar de filtros</h2>
 
-    <div class="filter-group">
-      <h3 class="filter-heading">Forma</h3>
-      <label class="filter-option"><input type="checkbox" checked><span>Calavera</span></label>
-      <label class="filter-option"><input type="checkbox" checked><span>Mano abierta</span></label>
-      <label class="filter-option"><input type="checkbox" checked><span>Luna creciente</span></label>
-      <label class="filter-option"><input type="checkbox" checked><span>Espiral / torre</span></label>
-      <label class="filter-option"><input type="checkbox" checked><span>Figura clásica</span></label>
-    </div>
+    <div class="filters-body">
+      <div class="filter-group">
+        <h3 class="filter-heading">Forma</h3>
+        <label class="filter-option"><input type="checkbox" checked><span>Calavera</span></label>
+        <label class="filter-option"><input type="checkbox" checked><span>Mano abierta</span></label>
+        <label class="filter-option"><input type="checkbox" checked><span>Luna creciente</span></label>
+        <label class="filter-option"><input type="checkbox" checked><span>Espiral / torre</span></label>
+        <label class="filter-option"><input type="checkbox" checked><span>Figura clásica</span></label>
+      </div>
 
-    <div class="filter-group">
-      <h3 class="filter-heading">Tamaño</h3>
-      <label class="filter-option"><input type="checkbox" checked><span>Mini ritual (5 cm)</span></label>
-      <label class="filter-option"><input type="checkbox" checked><span>Estándar (12 cm)</span></label>
-      <label class="filter-option"><input type="checkbox" checked><span>Pilar mayor (25 cm+)</span></label>
-    </div>
+      <div class="filter-group">
+        <h3 class="filter-heading">Tamaño</h3>
+        <label class="filter-option"><input type="checkbox" checked><span>Mini ritual (5 cm)</span></label>
+        <label class="filter-option"><input type="checkbox" checked><span>Estándar (12 cm)</span></label>
+        <label class="filter-option"><input type="checkbox" checked><span>Pilar mayor (25 cm+)</span></label>
+      </div>
 
-    <div class="filter-group">
-      <h3 class="filter-heading">Uso</h3>
-      <label class="filter-option"><input type="checkbox" checked><span>Decoración</span></label>
-      <label class="filter-option"><input type="checkbox" checked><span>Meditación</span></label>
-      <label class="filter-option"><input type="checkbox" checked><span>Ritual / altar</span></label>
-      <label class="filter-option"><input type="checkbox" checked><span>Regalo</span></label>
-    </div>
+      <div class="filter-group">
+        <h3 class="filter-heading">Uso</h3>
+        <label class="filter-option"><input type="checkbox" checked><span>Decoración</span></label>
+        <label class="filter-option"><input type="checkbox" checked><span>Meditación</span></label>
+        <label class="filter-option"><input type="checkbox" checked><span>Ritual / altar</span></label>
+        <label class="filter-option"><input type="checkbox" checked><span>Regalo</span></label>
+      </div>
 
-    <div class="filter-group">
-      <h3 class="filter-heading">Aroma</h3>
-      <label class="filter-option"><input type="checkbox" checked><span>Sin aroma</span></label>
-      <label class="filter-option"><input type="checkbox" checked><span>Madera y resina</span></label>
-      <label class="filter-option"><input type="checkbox" checked><span>Incienso negro</span></label>
-      <label class="filter-option"><input type="checkbox" checked><span>Flor seca</span></label>
-    </div>
+      <div class="filter-group">
+        <h3 class="filter-heading">Aroma</h3>
+        <label class="filter-option"><input type="checkbox" checked><span>Sin aroma</span></label>
+        <label class="filter-option"><input type="checkbox" checked><span>Madera y resina</span></label>
+        <label class="filter-option"><input type="checkbox" checked><span>Incienso negro</span></label>
+        <label class="filter-option"><input type="checkbox" checked><span>Flor seca</span></label>
+      </div>
 
-    <button class="filter-reset" type="button">Restablecer filtros</button>
+      <button class="filter-reset" type="button">Restablecer filtros</button>
+    </div>
   </aside>
+
 
   <div class="catalog">
     <div class="catalog-head">
@@ -229,7 +307,7 @@
 <!-- ===== HISTORIA ===== -->
 <section class="history" id="historia">
   <div class="history-inner">
-    <p class="hero-eyebrow">Nuestro oficio</p>
+    <p class="hero-eyebrow">Nuestra historia</p>
     <h2 class="history-title">No moldeamos cera.<br>Le damos un propósito.</h2>
     <p class="history-text">
       Cada forma de nuestro catálogo nace de un molde propio, tallado a mano
@@ -250,10 +328,10 @@
           <path d="M20 9 C20 9 14 18 14 23 a6 6 0 0 0 12 0 C26 18 20 9 20 9 Z" fill="currentColor"/>
         </svg>
       </span>
-      <span class="brand-name">Ánima</span>
+      <span class="brand-name">Messina</span>
     </div>
     <p class="footer-text">Velas de autor, hechas a mano, en ediciones que no se repiten.</p>
-    <p class="footer-copy">© 2026 Ánima · Encargos a medida: hola@anima-velas.com</p>
+    <p class="footer-copy">© 2026 Sitio creado por Carolina Gomez</p>
   </div>
 </footer>
 
