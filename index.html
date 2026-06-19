@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ánima — Velas de Autor</title>
+<meta name="description" content="Velas de autor en formas, tamaños y aromas que no encontrarás en ningún otro lugar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <nav class="main-nav">
+    <ul class="nav-side nav-left">
+      <li><a href="#coleccion">Colección</a></li>
+      <li><a href="#exclusivas">Exclusivas</a></li>
+      <li><a href="#aromas">Aromas</a></li>
+    </ul>
+
+    <a href="#top" class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="34" height="34">
+          <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1"/>
+          <path d="M20 9 C20 9 14 18 14 23 a6 6 0 0 0 12 0 C26 18 20 9 20 9 Z" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="brand-name">Ánima</span>
+    </a>
+
+    <ul class="nav-side nav-right">
+      <li><a href="#historia">Nuestro oficio</a></li>
+      <li><a href="#contacto">Encargos</a></li>
+      <li><a href="#carrito" class="nav-cart" aria-label="Carrito">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M3 6h2l2.4 11.2a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L20 8H6"/>
+          <circle cx="9.5" cy="20.5" r="1"/>
+          <circle cx="17.5" cy="20.5" r="1"/>
+        </svg>
+        <span class="cart-count">0</span>
+      </a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Cera, fuego y oficio</p>
+    <h1 class="hero-title">
+      Cada llama<br>
+      guarda una <em>forma</em><br>
+      que no existe<br>
+      en otro lugar.
+    </h1>
+    <p class="hero-sub">
+      Piezas talladas y fundidas a mano en ediciones reducidas.
+      Si ya la viste en otro sitio, no es nuestra.
+    </p>
+    <a href="#coleccion" class="hero-cta">Ver la colección</a>
+  </div>
+
+  <div class="candle-stage" aria-hidden="true">
+    <div class="candle">
+      <div class="flame-glow"></div>
+      <div class="flame">
+        <div class="flame-core"></div>
+      </div>
+      <div class="wick"></div>
+      <div class="wax-pool"></div>
+      <div class="candle-body">
+        <div class="drip drip-1"></div>
+        <div class="drip drip-2"></div>
+        <div class="drip drip-3"></div>
+      </div>
+    </div>
+    <div class="smoke s1"></div>
+    <div class="smoke s2"></div>
+    <div class="smoke s3"></div>
+  </div>
+</section>
+
+<!-- ===== TIENDA: SIDEBAR + GRID ===== -->
+<section class="shop" id="coleccion">
+
+  <aside class="filters" aria-label="Filtrar velas">
+    <h2 class="filters-title">El altar de filtros</h2>
+
+    <div class="filter-group">
+      <h3 class="filter-heading">Forma</h3>
+      <label class="filter-option"><input type="checkbox" checked><span>Calavera</span></label>
+      <label class="filter-option"><input type="checkbox" checked><span>Mano abierta</span></label>
+      <label class="filter-option"><input type="checkbox" checked><span>Luna creciente</span></label>
+      <label class="filter-option"><input type="checkbox" checked><span>Espiral / torre</span></label>
+      <label class="filter-option"><input type="checkbox" checked><span>Figura clásica</span></label>
+    </div>
+
+    <div class="filter-group">
+      <h3 class="filter-heading">Tamaño</h3>
+      <label class="filter-option"><input type="checkbox" checked><span>Mini ritual (5 cm)</span></label>
+      <label class="filter-option"><input type="checkbox" checked><span>Estándar (12 cm)</span></label>
+      <label class="filter-option"><input type="checkbox" checked><span>Pilar mayor (25 cm+)</span></label>
+    </div>
+
+    <div class="filter-group">
+      <h3 class="filter-heading">Uso</h3>
+      <label class="filter-option"><input type="checkbox" checked><span>Decoración</span></label>
+      <label class="filter-option"><input type="checkbox" checked><span>Meditación</span></label>
+      <label class="filter-option"><input type="checkbox" checked><span>Ritual / altar</span></label>
+      <label class="filter-option"><input type="checkbox" checked><span>Regalo</span></label>
+    </div>
+
+    <div class="filter-group">
+      <h3 class="filter-heading">Aroma</h3>
+      <label class="filter-option"><input type="checkbox" checked><span>Sin aroma</span></label>
+      <label class="filter-option"><input type="checkbox" checked><span>Madera y resina</span></label>
+      <label class="filter-option"><input type="checkbox" checked><span>Incienso negro</span></label>
+      <label class="filter-option"><input type="checkbox" checked><span>Flor seca</span></label>
+    </div>
+
+    <button class="filter-reset" type="button">Restablecer filtros</button>
+  </aside>
+
+  <div class="catalog">
+    <div class="catalog-head">
+      <h2 class="catalog-title">Pieza por pieza</h2>
+      <p class="catalog-count"><span id="result-count">12</span> piezas disponibles</p>
+    </div>
+
+    <div class="product-grid" id="product-grid">
+
+      <article class="product-card" data-rare="true">
+        <span class="product-badge">Pieza única</span>
+        <div class="product-thumb thumb-skull"></div>
+        <h3 class="product-name">Memento</h3>
+        <p class="product-tag">Calavera · Pilar mayor</p>
+        <p class="product-price">$18.500</p>
+      </article>
+
+      <article class="product-card">
+        <div class="product-thumb thumb-hand"></div>
+        <h3 class="product-name">Ofrenda</h3>
+        <p class="product-tag">Mano abierta · Estándar</p>
+        <p class="product-price">$11.200</p>
+      </article>
+
+      <article class="product-card" data-rare="true">
+        <span class="product-badge">Edición limitada</span>
+        <div class="product-thumb thumb-moon"></div>
+        <h3 class="product-name">Luna Vieja</h3>
+        <p class="product-tag">Luna creciente · Mini ritual</p>
+        <p class="product-price">$7.900</p>
+      </article>
+
+      <article class="product-card">
+        <div class="product-thumb thumb-spiral"></div>
+        <h3 class="product-name">Babel</h3>
+        <p class="product-tag">Espiral · Pilar mayor</p>
+        <p class="product-price">$21.000</p>
+      </article>
+
+      <article class="product-card">
+        <div class="product-thumb thumb-classic"></div>
+        <h3 class="product-name">Vigilia</h3>
+        <p class="product-tag">Clásica · Estándar</p>
+        <p class="product-price">$6.400</p>
+      </article>
+
+      <article class="product-card" data-rare="true">
+        <span class="product-badge">Pieza única</span>
+        <div class="product-thumb thumb-skull-2"></div>
+        <h3 class="product-name">Cráneo de Sal</h3>
+        <p class="product-tag">Calavera · Mini ritual</p>
+        <p class="product-price">$9.300</p>
+      </article>
+
+      <article class="product-card">
+        <div class="product-thumb thumb-hand-2"></div>
+        <h3 class="product-name">Voto</h3>
+        <p class="product-tag">Mano abierta · Mini ritual</p>
+        <p class="product-price">$5.800</p>
+      </article>
+
+      <article class="product-card">
+        <div class="product-thumb thumb-moon-2"></div>
+        <h3 class="product-name">Eclipse</h3>
+        <p class="product-tag">Luna creciente · Estándar</p>
+        <p class="product-price">$10.600</p>
+      </article>
+
+      <article class="product-card" data-rare="true">
+        <span class="product-badge">Edición limitada</span>
+        <div class="product-thumb thumb-spiral-2"></div>
+        <h3 class="product-name">Ouroboros</h3>
+        <p class="product-tag">Espiral · Pilar mayor</p>
+        <p class="product-price">$23.500</p>
+      </article>
+
+      <article class="product-card">
+        <div class="product-thumb thumb-classic-2"></div>
+        <h3 class="product-name">Vela del Viajero</h3>
+        <p class="product-tag">Clásica · Mini ritual</p>
+        <p class="product-price">$4.900</p>
+      </article>
+
+      <article class="product-card">
+        <div class="product-thumb thumb-skull"></div>
+        <h3 class="product-name">Sombra Dulce</h3>
+        <p class="product-tag">Calavera · Estándar</p>
+        <p class="product-price">$12.700</p>
+      </article>
+
+      <article class="product-card" data-rare="true">
+        <span class="product-badge">Pieza única</span>
+        <div class="product-thumb thumb-hand"></div>
+        <h3 class="product-name">Plegaria</h3>
+        <p class="product-tag">Mano abierta · Pilar mayor</p>
+        <p class="product-price">$19.900</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== HISTORIA ===== -->
+<section class="history" id="historia">
+  <div class="history-inner">
+    <p class="hero-eyebrow">Nuestro oficio</p>
+    <h2 class="history-title">No moldeamos cera.<br>Le damos un propósito.</h2>
+    <p class="history-text">
+      Cada forma de nuestro catálogo nace de un molde propio, tallado a mano
+      antes de fundir la primera vela. Cuando una edición se agota, no vuelve
+      a producirse igual. Por eso lo que encendés acá no se consigue
+      en ningún otro estante.
+    </p>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer" id="contacto">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="28" height="28">
+          <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1"/>
+          <path d="M20 9 C20 9 14 18 14 23 a6 6 0 0 0 12 0 C26 18 20 9 20 9 Z" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="brand-name">Ánima</span>
+    </div>
+    <p class="footer-text">Velas de autor, hechas a mano, en ediciones que no se repiten.</p>
+    <p class="footer-copy">© 2026 Ánima · Encargos a medida: hola@anima-velas.com</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
