@@ -317,4 +317,196 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   applyFilters();
+
+  // ===================== CARTAS (TAROT) =====================
+  const cartaCards = Array.from(document.querySelectorAll('.carta-card'));
+
+  cartaCards.forEach(card => {
+    card.style.cursor = 'pointer';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+
+    const name = card.querySelector('.carta-name').textContent.trim();
+    const price = parsePrice(card.querySelector('.carta-price').textContent.trim());
+    card.setAttribute('aria-label', 'Agregar ' + name + ' al carrito');
+
+    function addCartaToCart() {
+      addToCart({ name, tag: 'Mazo de tarot', price, qty: 1 });
+
+      card.classList.add('product-card--added');
+      setTimeout(() => card.classList.remove('product-card--added'), 500);
+    }
+
+    card.addEventListener('click', addCartaToCart);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        addCartaToCart();
+      }
+    });
+  });
+
+  // ===================== PACKS / PEDIDOS =====================
+  const packCards = Array.from(document.querySelectorAll('.pack-card'));
+
+  packCards.forEach(card => {
+    const btn = card.querySelector('.pack-cta');
+    if (!btn) return;
+
+    const isCustom = card.classList.contains('pack-card--custom');
+
+    btn.addEventListener('click', () => {
+      if (isCustom) {
+        // sin precio fijo: lleva al contacto en vez de agregar al carrito
+        document.getElementById('contacto').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+
+      const name = card.querySelector('.pack-name').textContent.trim();
+      const priceEl = card.querySelector('.pack-price');
+      // tomar solo el primer número del precio (ignora el "tachado" .pack-was)
+      const priceText = priceEl.childNodes[0].textContent.trim();
+      const price = parsePrice(priceText);
+
+      addToCart({ name, tag: 'Pack', price, qty: 1 });
+
+      const originalText = btn.textContent;
+      btn.textContent = 'Agregado ✓';
+      btn.classList.add('is-confirmed');
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.classList.remove('is-confirmed');
+      }, 1100);
+    });
+  });
+
+  // ===================== RESEÑAS =====================
+  const STORAGE_KEY = 'messina_reviews';
+
+  const sampleReviews = [
+    { name: 'Marina G.', rating: 5, text: 'La vela Memento es impresionante en persona, mucho más detallada que en la foto. Llegó perfecta.', date: '2026-05-12' },
+    { name: 'Tomás R.', rating: 5, text: 'Pedí el Pack Inicio para regalar y quedaron todos encantados. El mazo Rider-Waite es de muy buena calidad.', date: '2026-04-28' },
+    { name: 'Florencia A.', rating: 4, text: 'Hermosa la Luna Vieja, arde parejo y el aroma es sutil, no empalaga. Le bajo una estrella solo por la demora del envío.', date: '2026-04-03' },
+  ];
+
+  function loadStoredReviews() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function saveStoredReviews(reviews) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
+    } catch {
+      // si localStorage no está disponible (modo privado, etc.) seguimos sin persistir
+    }
+  }
+
+  function starsMarkup(rating) {
+    let html = '';
+    for (let i = 1; i <= 5; i++) {
+      html += `<span class="${i <= rating ? 'star-filled' : 'star-empty'}">★</span>`;
+    }
+    return html;
+  }
+
+  function formatReviewDate(isoDate) {
+    const d = new Date(isoDate + 'T00:00:00');
+    if (isNaN(d)) return '';
+    return d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  const reviewsListEl = document.getElementById('reviews-list');
+  const reviewsAvgEl = document.getElementById('reviews-avg');
+  const reviewsAvgStarsEl = document.getElementById('reviews-avg-stars');
+  const reviewsCountEl = document.getElementById('reviews-count');
+
+  function renderReviews() {
+    const stored = loadStoredReviews();
+    const all = [...stored, ...sampleReviews].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    reviewsListEl.innerHTML = '';
+
+    all.forEach(r => {
+      const card = document.createElement('article');
+      card.className = 'review-card';
+      card.innerHTML = `
+        <div class="review-card-head">
+          <p class="review-name">${escapeHtml(r.name)}</p>
+          <div class="review-stars">${starsMarkup(r.rating)}</div>
+        </div>
+        <p class="review-date">${formatReviewDate(r.date)}</p>
+        <p class="review-text">${escapeHtml(r.text)}</p>
+      `;
+      reviewsListEl.appendChild(card);
+    });
+
+    const avg = all.length ? all.reduce((sum, r) => sum + r.rating, 0) / all.length : 5;
+    reviewsAvgEl.textContent = avg.toFixed(1);
+    reviewsAvgStarsEl.innerHTML = starsMarkup(Math.round(avg));
+    reviewsCountEl.textContent = all.length + (all.length === 1 ? ' reseña' : ' reseñas');
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  renderReviews();
+
+  // selector de estrellas del formulario
+  const starPicker = document.getElementById('star-picker');
+  const starBtns = starPicker ? Array.from(starPicker.querySelectorAll('.star-btn')) : [];
+  const ratingInput = document.getElementById('review-rating');
+
+  function setStarRating(value) {
+    ratingInput.value = value;
+    starBtns.forEach(btn => {
+      const active = Number(btn.dataset.value) <= value;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-checked', active ? 'true' : 'false');
+    });
+  }
+
+  starBtns.forEach(btn => {
+    btn.addEventListener('click', () => setStarRating(Number(btn.dataset.value)));
+  });
+
+  // formulario de nueva reseña
+  const reviewForm = document.getElementById('review-form');
+  const reviewFormError = document.getElementById('review-form-error');
+
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('review-name').value.trim();
+      const text = document.getElementById('review-text').value.trim();
+      const rating = Number(ratingInput.value);
+
+      if (!name || !text || !rating) {
+        reviewFormError.hidden = false;
+        return;
+      }
+      reviewFormError.hidden = true;
+
+      const stored = loadStoredReviews();
+      stored.push({
+        name,
+        rating,
+        text,
+        date: new Date().toISOString().slice(0, 10),
+      });
+      saveStoredReviews(stored);
+
+      renderReviews();
+      reviewForm.reset();
+      setStarRating(0);
+    });
+  }
 });

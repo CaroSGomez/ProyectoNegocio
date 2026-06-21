@@ -21,10 +21,11 @@
 
     <ul class="nav-side nav-left" id="nav-menu">
       <li><a href="#coleccion">Colección</a></li>
-      <li><a href="#exclusivas">Exclusivas</a></li>
-      <li><a href="#aromas">Aromas</a></li>
+      <li><a href="#coleccion">Exclusivas</a></li>
+      <li><a href="#cartas">Cartas</a></li>
+      <li class="nav-mobile-only"><a href="#resenas">Reseñas</a></li>
+      <li class="nav-mobile-only"><a href="#packs">Packs/Pedidos</a></li>
       <li class="nav-mobile-only"><a href="#historia">Nuestra historia</a></li>
-      <li class="nav-mobile-only"><a href="#contacto">Packs/Pedidos</a></li>
     </ul>
 
     <a href="#top" class="brand">
@@ -59,8 +60,9 @@
     </a>
 
     <ul class="nav-side nav-right">
+      <li class="nav-desktop-only"><a href="#resenas">Reseñas</a></li>
+      <li class="nav-desktop-only"><a href="#packs">Packs/Pedidos</a></li>
       <li class="nav-desktop-only"><a href="#historia">Nuestra historia</a></li>
-      <li class="nav-desktop-only"><a href="#contacto">Packs/Pedidos</a></li>
       <li>
         <button class="nav-cart" type="button" id="cart-toggle" aria-label="Ver carrito" aria-expanded="false" aria-controls="cart-panel">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4">
@@ -354,6 +356,145 @@
   </div>
 </section>
 
+<!-- ===== RESEÑAS ===== -->
+<section class="reviews" id="resenas">
+  <div class="reviews-inner">
+    <p class="hero-eyebrow">Lo que dicen quienes ya encendieron una</p>
+    <h2 class="reviews-title">Reseñas</h2>
+
+    <div class="reviews-summary">
+      <span class="reviews-avg" id="reviews-avg">5.0</span>
+      <div class="reviews-stars-row">
+        <div class="reviews-stars" id="reviews-avg-stars" aria-hidden="true"></div>
+        <p class="reviews-count" id="reviews-count">0 reseñas</p>
+      </div>
+    </div>
+
+    <div class="reviews-list" id="reviews-list">
+      <!-- las reseñas (de muestra + las que carguen los visitantes) se renderizan acá vía JS -->
+    </div>
+
+    <form class="review-form" id="review-form">
+      <h3 class="review-form-title">Dejá tu reseña</h3>
+
+      <div class="review-form-row">
+        <label for="review-name">Tu nombre</label>
+        <input type="text" id="review-name" name="review-name" placeholder="Ej: Marina G." required maxlength="60">
+      </div>
+
+      <div class="review-form-row">
+        <label>Calificación</label>
+        <div class="star-picker" id="star-picker" role="radiogroup" aria-label="Calificación de 1 a 5 estrellas">
+          <button type="button" class="star-btn" data-value="1" role="radio" aria-checked="false" aria-label="1 estrella">★</button>
+          <button type="button" class="star-btn" data-value="2" role="radio" aria-checked="false" aria-label="2 estrellas">★</button>
+          <button type="button" class="star-btn" data-value="3" role="radio" aria-checked="false" aria-label="3 estrellas">★</button>
+          <button type="button" class="star-btn" data-value="4" role="radio" aria-checked="false" aria-label="4 estrellas">★</button>
+          <button type="button" class="star-btn" data-value="5" role="radio" aria-checked="false" aria-label="5 estrellas">★</button>
+        </div>
+        <input type="hidden" id="review-rating" name="review-rating" value="0" required>
+      </div>
+
+      <div class="review-form-row">
+        <label for="review-text">Tu comentario</label>
+        <textarea id="review-text" name="review-text" rows="3" placeholder="Contanos qué te pareció tu vela..." required maxlength="400"></textarea>
+      </div>
+
+      <p class="review-form-error" id="review-form-error" hidden>Completá tu nombre, una calificación y un comentario antes de enviar.</p>
+
+      <button type="submit" class="hero-cta review-submit">Publicar reseña</button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== CARTAS (TAROT) ===== -->
+<section class="cartas" id="cartas">
+  <div class="cartas-inner">
+    <p class="hero-eyebrow">Otra forma de leer la llama</p>
+    <h2 class="cartas-title">Cartas</h2>
+    <p class="cartas-sub">
+      Mazos de tarot seleccionados para acompañar tu ritual. Cada mazo viene
+      con una guía de uso y su propósito específico.
+    </p>
+
+    <div class="cartas-grid">
+
+      <article class="carta-card">
+        <div class="carta-thumb carta-thumb-rider"></div>
+        <h3 class="carta-name">Rider-Waite Clásico</h3>
+        <p class="carta-purpose">Para empezar: el mazo de referencia, ideal para aprender los arcanos desde su simbología original.</p>
+        <p class="carta-price">$14.200</p>
+      </article>
+
+      <article class="carta-card">
+        <div class="carta-thumb carta-thumb-shadow"></div>
+        <h3 class="carta-name">Sombra y Espejo</h3>
+        <p class="carta-purpose">Para trabajo introspectivo: pensado para preguntas sobre lo que evitamos ver de nosotros mismos.</p>
+        <p class="carta-price">$16.800</p>
+      </article>
+
+      <article class="carta-card">
+        <div class="carta-thumb carta-thumb-moon"></div>
+        <h3 class="carta-name">Ciclos Lunares</h3>
+        <p class="carta-purpose">Para timing y decisiones: organizado en torno a las fases de la luna, útil para saber "cuándo" en vez de "qué".</p>
+        <p class="carta-price">$15.500</p>
+      </article>
+
+      <article class="carta-card">
+        <div class="carta-thumb carta-thumb-roots"></div>
+        <h3 class="carta-name">Raíces</h3>
+        <p class="carta-purpose">Para vínculos y familia: enfocado en relaciones, herencias emocionales y patrones repetidos.</p>
+        <p class="carta-price">$15.900</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== PACKS / PEDIDOS ===== -->
+<section class="packs" id="packs">
+  <div class="packs-inner">
+    <p class="hero-eyebrow">Comprá en cantidad, ahorrá más</p>
+    <h2 class="packs-title">Packs &amp; Pedidos</h2>
+    <p class="packs-sub">
+      Combos pensados para regalar, revender o abastecer un espacio entero.
+      También armamos pedidos a medida si necesitás otra combinación.
+    </p>
+
+    <div class="packs-grid">
+
+      <article class="pack-card">
+        <span class="pack-badge">Más elegido</span>
+        <h3 class="pack-name">Pack Inicio</h3>
+        <p class="pack-detail">3 velas a elección + 1 mazo de cartas</p>
+        <p class="pack-price">$32.000 <span class="pack-was">$38.500</span></p>
+        <button class="hero-cta pack-cta" type="button">Consultar este pack</button>
+      </article>
+
+      <article class="pack-card">
+        <h3 class="pack-name">Pack Altar Completo</h3>
+        <p class="pack-detail">6 velas de la colección + 1 mazo de cartas a elección</p>
+        <p class="pack-price">$58.000 <span class="pack-was">$71.000</span></p>
+        <button class="hero-cta pack-cta" type="button">Consultar este pack</button>
+      </article>
+
+      <article class="pack-card">
+        <span class="pack-badge">Mayorista</span>
+        <h3 class="pack-name">Pack Revendedor</h3>
+        <p class="pack-detail">12 velas surtidas, ideal para reventa o eventos</p>
+        <p class="pack-price">$98.000 <span class="pack-was">$124.000</span></p>
+        <button class="hero-cta pack-cta" type="button">Consultar este pack</button>
+      </article>
+
+      <article class="pack-card pack-card--custom">
+        <h3 class="pack-name">Pedido a medida</h3>
+        <p class="pack-detail">¿Necesitás otra combinación de velas, cartas o cantidades? Armamos el pack con vos.</p>
+        <button class="hero-cta pack-cta" type="button">Armar mi pedido</button>
+      </article>
+
+    </div>
+  </div>
+</section>
+
 <!-- ===== HISTORIA ===== -->
 <section class="history" id="historia">
   <div class="history-inner">
@@ -402,7 +543,7 @@
       <span class="brand-name">Messina</span>
     </div>
     <p class="footer-text">Velas de autor, hechas a mano, en ediciones que no se repiten.</p>
-    <p class="footer-copy">© 2026 Sitio creado por Carolina Gomez</p>
+    <p class="footer-copy">© 2026 Messina · Packs y pedidos a medida: hola@messina-velas.com</p>
   </div>
 </footer>
 
