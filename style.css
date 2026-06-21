@@ -315,6 +315,153 @@ h1, h2, h3{
   cursor: pointer;
 }
 
+/* ===================== MODAL: detalle de producto ===================== */
+
+.modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 10, 14, 0.72);
+  backdrop-filter: blur(3px);
+  z-index: 95;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.is-open{ opacity: 1; }
+
+.product-modal{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  width: min(720px, 92vw);
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid rgba(212,175,55,0.22);
+  z-index: 96;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.product-modal.is-open{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-close{
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px; height: 30px;
+  background: rgba(11,10,14,0.55);
+  border: 1px solid var(--gold-dim);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1;
+  z-index: 2;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.modal-close:hover{ color: var(--gold); border-color: var(--gold); }
+
+.modal-thumb{
+  position: relative;
+  min-height: 280px;
+  background: var(--panel-2);
+  overflow: hidden;
+}
+.modal-thumb::after{
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 32%, rgba(212,175,55,0.2) 0%, rgba(212,175,55,0) 62%);
+}
+
+.modal-info{
+  padding: 32px 30px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-badge{
+  position: static;
+  align-self: flex-start;
+  margin-bottom: 12px;
+}
+
+.modal-name{
+  font-size: 1.9rem;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+.modal-tag{
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin: 0 0 18px;
+}
+
+.modal-desc{
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0 0 16px;
+}
+
+.modal-real-photo{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  color: var(--ink-dim);
+  margin: 0 0 24px;
+}
+
+.modal-bottom{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(212,175,55,0.14);
+}
+
+.modal-price{
+  font-family: var(--display);
+  font-size: 1.6rem;
+  font-style: italic;
+  color: var(--gold);
+  margin: 0;
+}
+
+.modal-qty{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.95rem;
+}
+
+.modal-add{
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: transparent;
+  font-family: var(--body);
+  cursor: pointer;
+}
+
+.modal-add.is-confirmed{
+  background: var(--gold);
+  color: var(--bg);
+}
+
 /* ===================== HERO ===================== */
 
 .hero{
@@ -388,6 +535,7 @@ h1, h2, h3{
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  --candle-h: 230px;
 }
 
 .candle{
@@ -398,7 +546,7 @@ h1, h2, h3{
 .candle-body{
   position: relative;
   width: 64px;
-  height: 230px;
+  height: var(--candle-h);
   margin: 0 auto;
   background: linear-gradient(180deg, #2a2330 0%, #1a1620 100%);
   border: 1px solid rgba(212,175,55,0.25);
@@ -418,34 +566,41 @@ h1, h2, h3{
 .drip-2{ left: 28px; height: 20px; }
 .drip-3{ right: 8px; height: 44px; }
 
+/* wax-pool, wick, flame y flame-glow se anclan a bottom:100% del
+   candle-body (no a píxeles fijos del stage), así siempre quedan
+   justo en la punta de la vela sin importar su alto en cada breakpoint. */
+
 .wax-pool{
   position: absolute;
-  bottom: 228px;
+  bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
   width: 70px;
   height: 14px;
+  margin-bottom: -6px;
   background: radial-gradient(ellipse, #3a3140 0%, rgba(58,49,64,0) 75%);
   border-radius: 50%;
 }
 
 .wick{
   position: absolute;
-  bottom: 228px;
+  bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
   width: 2px;
   height: 14px;
+  margin-bottom: -2px;
   background: #3b342f;
 }
 
 .flame{
   position: absolute;
-  bottom: 240px;
+  bottom: 100%;
   left: 50%;
   width: 16px;
   height: 38px;
   margin-left: -8px;
+  margin-bottom: 10px;
   background: linear-gradient(180deg, #fff6d8 0%, var(--gold) 38%, #b8741f 70%, transparent 100%);
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   transform-origin: 50% 100%;
@@ -466,11 +621,12 @@ h1, h2, h3{
 
 .flame-glow{
   position: absolute;
-  bottom: 232px;
+  bottom: 100%;
   left: 50%;
   width: 140px;
   height: 140px;
   margin-left: -70px;
+  margin-bottom: -2px;
   background: radial-gradient(circle, rgba(212,175,55,0.28) 0%, rgba(212,175,55,0) 70%);
   animation: glow-pulse 2.6s ease-in-out infinite;
 }
@@ -490,7 +646,7 @@ h1, h2, h3{
 
 .smoke{
   position: absolute;
-  bottom: 280px;
+  bottom: calc(var(--candle-h) + 36px);
   left: 50%;
   width: 5px;
   height: 5px;
@@ -668,7 +824,7 @@ h1, h2, h3{
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 30px;
+  margin-bottom: 14px;
   border-bottom: 1px solid rgba(212,175,55,0.14);
   padding-bottom: 18px;
 }
@@ -684,6 +840,23 @@ h1, h2, h3{
   letter-spacing: 0.04em;
 }
 #result-count{ color: var(--gold); }
+
+.catalog-note{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  margin: 0 0 28px;
+}
+.catalog-note::before{
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+}
 
 .product-grid{
   display: grid;
@@ -828,7 +1001,7 @@ h1, h2, h3{
     min-height: auto;
     padding-top: 30px;
   }
-  .candle-stage{ height: 260px; order: -1; }
+  .candle-stage{ height: 260px; order: -1; --candle-h: 165px; }
   .hero-content{ padding: 30px 0 50px; text-align: left; }
   .hero-sub{ max-width: 100%; }
 
@@ -841,6 +1014,15 @@ h1, h2, h3{
 /* ----- Mobile: 760px ----- */
 @media (max-width: 760px){
   .perks{ padding: 28px 20px; }
+
+  .product-modal{
+    grid-template-columns: 1fr;
+    width: 92vw;
+    max-height: 86vh;
+  }
+  .modal-thumb{ min-height: 180px; }
+  .modal-info{ padding: 24px 22px 26px; }
+  .modal-name{ font-size: 1.55rem; }
 
   .main-nav{
     grid-template-columns: auto 1fr auto;
@@ -884,8 +1066,8 @@ h1, h2, h3{
 
   .hero{ padding: 0 20px; }
   .hero-title{ font-size: clamp(2.1rem, 9vw, 2.8rem); }
-  .candle-stage{ height: 200px; }
-  .candle-body{ width: 48px; height: 170px; }
+  .candle-stage{ height: 240px; --candle-h: 130px; }
+  .candle-body{ width: 48px; }
   .drip-1, .drip-2, .drip-3{ width: 8px; }
 
   .shop{
