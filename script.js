@@ -176,6 +176,147 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape') closeCart();
   });
 
+  // ===================== FIDELIDAD: ENVÍO GRATIS CADA 6TA COMPRA =====================
+  // Cuenta compras finalizadas por navegador/dispositivo (localStorage).
+  // Cada 5 compras acumuladas, la 6ta sale con envío gratis y el contador se reinicia.
+  const LOYALTY_KEY = 'messina_loyalty_purchases';
+  const PURCHASES_FOR_FREE_SHIPPING = 5;
+
+  const loyaltyTextEl = document.getElementById('loyalty-text');
+  const loyaltyBarFillEl = document.getElementById('loyalty-bar-fill');
+  const checkoutBtn = document.getElementById('cart-checkout');
+
+  function getLoyaltyCount() {
+    try {
+      const raw = localStorage.getItem(LOYALTY_KEY);
+      const n = raw ? parseInt(raw, 10) : 0;
+      return isNaN(n) ? 0 : n;
+    } catch {
+      return 0;
+    }
+  }
+
+  function setLoyaltyCount(n) {
+    try {
+      localStorage.setItem(LOYALTY_KEY, String(n));
+    } catch {
+      // si localStorage no está disponible, el conteo no persiste entre visitas
+    }
+  }
+
+  function renderLoyalty() {
+    const count = getLoyaltyCount();
+    const pct = Math.min(100, (count / PURCHASES_FOR_FREE_SHIPPING) * 100);
+    loyaltyBarFillEl.style.width = pct + '%';
+
+    if (count >= PURCHASES_FOR_FREE_SHIPPING) {
+      loyaltyTextEl.innerHTML = '<strong>¡Esta compra tiene envío gratis! 🎉</strong>';
+    } else {
+      const remaining = PURCHASES_FOR_FREE_SHIPPING - count;
+      loyaltyTextEl.innerHTML = `Llevás <strong>${count} de ${PURCHASES_FOR_FREE_SHIPPING}</strong> compras para tu envío gratis (te ${remaining === 1 ? 'falta' : 'faltan'} ${remaining})`;
+    }
+  }
+
+  renderLoyalty();
+
+  function buildWhatsAppOrderMessage(freeShipping, customerData) {
+    const lines = cart.map(item => `- ${item.name} (${item.tag}) x${item.qty} — ${formatPrice(item.price * item.qty)}`);
+    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+    let msg = "Hola Messina's name, quiero confirmar este pedido:\n\n";
+    msg += lines.join('\n');
+    msg += `\n\nTotal: ${formatPrice(total)}`;
+    if (freeShipping) {
+      msg += '\n\n🎉 Esta compra tiene envío gratis por fidelidad.';
+    }
+
+    msg += '\n\nDatos para la entrega:';
+    msg += `\nTitular: ${customerData.name}`;
+    msg += `\nTeléfono: ${customerData.phone}`;
+    msg += `\nDomicilio: ${customerData.address}`;
+    msg += `\nHorario preferido: ${customerData.time}`;
+    msg += `\nMedio de pago: ${customerData.payment}`;
+
+    return msg;
+  }
+
+  // ===================== MODAL DE CHECKOUT (datos de entrega) =====================
+  const checkoutOverlay = document.getElementById('checkout-overlay');
+  const checkoutModal = document.getElementById('checkout-modal');
+  const checkoutClose = document.getElementById('checkout-close');
+  const checkoutForm = document.getElementById('checkout-form');
+  const checkoutFormError = document.getElementById('checkout-form-error');
+
+  function openCheckoutModal() {
+    checkoutModal.classList.add('is-open');
+    checkoutOverlay.hidden = false;
+    requestAnimationFrame(() => checkoutOverlay.classList.add('is-open'));
+    checkoutModal.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeCheckoutModal() {
+    checkoutModal.classList.remove('is-open');
+    checkoutOverlay.classList.remove('is-open');
+    checkoutModal.setAttribute('aria-hidden', 'true');
+    setTimeout(() => { checkoutOverlay.hidden = true; }, 250);
+  }
+
+  if (checkoutClose) checkoutClose.addEventListener('click', closeCheckoutModal);
+  if (checkoutOverlay) checkoutOverlay.addEventListener('click', closeCheckoutModal);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeCheckoutModal();
+  });
+
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', () => {
+      if (cart.length === 0) return;
+      closeCart();
+      openCheckoutModal();
+    });
+  }
+
+  if (checkoutForm) {
+    checkoutForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('checkout-name').value.trim();
+      const phone = document.getElementById('checkout-phone').value.trim();
+      const address = document.getElementById('checkout-address').value.trim();
+      const timeRadio = checkoutForm.querySelector('input[name="checkout-time"]:checked');
+      const payment = document.getElementById('checkout-payment').value;
+
+      if (!name || !phone || !address || !timeRadio || !payment) {
+        checkoutFormError.hidden = false;
+        return;
+      }
+      checkoutFormError.hidden = true;
+
+      const customerData = {
+        name,
+        phone,
+        address,
+        time: timeRadio.value,
+        payment,
+      };
+
+      const currentCount = getLoyaltyCount();
+      const earnsFreeShipping = currentCount >= PURCHASES_FOR_FREE_SHIPPING;
+
+      // sumar la compra: si esta venía con envío gratis, el contador se reinicia;
+      // si no, suma 1 hacia el próximo envío gratis.
+      const newCount = earnsFreeShipping ? 0 : currentCount + 1;
+      setLoyaltyCount(newCount);
+      renderLoyalty();
+
+      const message = buildWhatsAppOrderMessage(earnsFreeShipping, customerData);
+      const waUrl = 'https://wa.me/5491168554861?text=' + encodeURIComponent(message);
+      window.open(waUrl, '_blank', 'noopener');
+
+      closeCheckoutModal();
+      checkoutForm.reset();
+    });
+  }
+
   // ===================== MODAL DE DETALLE DE PRODUCTO =====================
   const productOverlay = document.getElementById('product-overlay');
   const productModal = document.getElementById('product-modal');
@@ -349,6 +490,101 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===================== PACKS / PEDIDOS =====================
   const packCards = Array.from(document.querySelectorAll('.pack-card'));
 
+  const packOverlay = document.getElementById('pack-overlay');
+  const packModal = document.getElementById('pack-modal');
+  const packModalClose = document.getElementById('pack-modal-close');
+  const packModalBadge = document.getElementById('pack-modal-badge');
+  const packModalTitle = document.getElementById('pack-modal-title');
+  const packModalDesc = document.getElementById('pack-modal-desc');
+  const packModalGrid = document.getElementById('pack-modal-grid');
+  const packModalPrice = document.getElementById('pack-modal-price');
+  const packModalAddBtn = document.getElementById('pack-modal-add-btn');
+
+  let activePackData = null;
+
+  // data-includes usa el formato:
+  // "Nombre|claseThumb|Nombre|claseThumb||NombreCarta|claseCartaThumb"
+  // el "||" separa el bloque de velas del bloque de cartas (clases que empiezan con carta-thumb)
+  function parsePackIncludes(raw) {
+    if (!raw) return [];
+    const parts = raw.split('|').map(s => s.trim());
+    const items = [];
+    for (let i = 0; i < parts.length; i += 2) {
+      const name = parts[i];
+      const thumbClass = parts[i + 1];
+      if (name && thumbClass) items.push({ name, thumbClass });
+    }
+    return items;
+  }
+
+  function openPackModal(card) {
+    const name = card.querySelector('.pack-name').textContent.trim();
+    const priceEl = card.querySelector('.pack-price');
+    const priceText = priceEl.childNodes[0].textContent.trim();
+    const price = parsePrice(priceText);
+
+    activePackData = { name, tag: 'Pack', price, qty: 1 };
+
+    const badge = card.querySelector('.pack-badge');
+    if (badge) {
+      packModalBadge.textContent = badge.textContent;
+      packModalBadge.hidden = false;
+    } else {
+      packModalBadge.hidden = true;
+    }
+
+    packModalTitle.textContent = name;
+    packModalDesc.textContent = card.dataset.desc || '';
+    packModalPrice.textContent = formatPrice(price);
+
+    const items = parsePackIncludes(card.dataset.includes);
+    packModalGrid.innerHTML = '';
+    items.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'pack-modal-item';
+      el.innerHTML = `
+        <div class="pack-modal-thumb ${item.thumbClass}"></div>
+        <p class="pack-modal-item-name">${item.name}</p>
+      `;
+      packModalGrid.appendChild(el);
+    });
+
+    packModalAddBtn.textContent = 'Agregar al carrito';
+    packModalAddBtn.classList.remove('is-confirmed');
+
+    packModal.classList.add('is-open');
+    packOverlay.hidden = false;
+    requestAnimationFrame(() => packOverlay.classList.add('is-open'));
+    packModal.setAttribute('aria-hidden', 'false');
+  }
+
+  function closePackModal() {
+    packModal.classList.remove('is-open');
+    packOverlay.classList.remove('is-open');
+    packModal.setAttribute('aria-hidden', 'true');
+    setTimeout(() => { packOverlay.hidden = true; }, 250);
+  }
+
+  if (packModalClose) packModalClose.addEventListener('click', closePackModal);
+  if (packOverlay) packOverlay.addEventListener('click', closePackModal);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePackModal();
+  });
+
+  if (packModalAddBtn) {
+    packModalAddBtn.addEventListener('click', () => {
+      if (!activePackData) return;
+      addToCart(activePackData);
+
+      packModalAddBtn.textContent = 'Agregado ✓';
+      packModalAddBtn.classList.add('is-confirmed');
+      setTimeout(() => {
+        packModalAddBtn.textContent = 'Agregar al carrito';
+        packModalAddBtn.classList.remove('is-confirmed');
+      }, 1100);
+    });
+  }
+
   packCards.forEach(card => {
     const btn = card.querySelector('.pack-cta');
     if (!btn) return;
@@ -357,26 +593,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btn.addEventListener('click', () => {
       if (isCustom) {
-        // sin precio fijo: lleva al contacto en vez de agregar al carrito
+        // sin precio fijo: lleva al contacto en vez de abrir el modal
         document.getElementById('contacto').scrollIntoView({ behavior: 'smooth' });
         return;
       }
 
-      const name = card.querySelector('.pack-name').textContent.trim();
-      const priceEl = card.querySelector('.pack-price');
-      // tomar solo el primer número del precio (ignora el "tachado" .pack-was)
-      const priceText = priceEl.childNodes[0].textContent.trim();
-      const price = parsePrice(priceText);
-
-      addToCart({ name, tag: 'Pack', price, qty: 1 });
-
-      const originalText = btn.textContent;
-      btn.textContent = 'Agregado ✓';
-      btn.classList.add('is-confirmed');
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.classList.remove('is-confirmed');
-      }, 1100);
+      openPackModal(card);
     });
   });
 

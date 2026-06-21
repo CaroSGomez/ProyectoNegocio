@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Messina — Velas de Autor</title>
+<title>Messina's name — Velas de Autor</title>
 <meta name="description" content="Velas de autor en formas, tamaños y aromas que no encontrarás en ningún otro lugar.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,7 +56,7 @@
           </g>
         </svg>
       </span>
-      <span class="brand-name">Messina</span>
+      <span class="brand-name">Messina's name</span>
     </a>
 
     <ul class="nav-side nav-right">
@@ -90,11 +90,16 @@
   </div>
 
   <div class="cart-panel-foot">
+    <div class="loyalty-progress" id="loyalty-progress">
+      <p class="loyalty-text" id="loyalty-text">Llevás 0 de 5 compras para tu envío gratis</p>
+      <div class="loyalty-bar"><div class="loyalty-bar-fill" id="loyalty-bar-fill"></div></div>
+    </div>
+
     <div class="cart-total-row">
       <span>Total</span>
       <span id="cart-total">$0</span>
     </div>
-    <button class="hero-cta cart-checkout" type="button">Finalizar pedido</button>
+    <button class="hero-cta cart-checkout" id="cart-checkout" type="button">Finalizar pedido</button>
   </div>
 </aside>
 
@@ -123,6 +128,85 @@
     </div>
 
     <button class="hero-cta modal-add" id="modal-add-btn" type="button">Agregar al carrito</button>
+  </div>
+</div>
+
+<!-- ===== MODAL: checkout (datos de entrega) ===== -->
+<div class="modal-overlay" id="checkout-overlay" hidden></div>
+<div class="checkout-modal" id="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-modal-title" aria-hidden="true">
+  <button class="modal-close" id="checkout-close" type="button" aria-label="Cerrar">✕</button>
+
+  <div class="checkout-modal-inner">
+    <h2 class="checkout-modal-title" id="checkout-modal-title">Completá tus datos</h2>
+    <p class="checkout-modal-sub">Con esto armamos tu pedido y lo confirmamos por WhatsApp.</p>
+
+    <form id="checkout-form">
+      <div class="review-form-row">
+        <label for="checkout-name">Nombre del titular</label>
+        <input type="text" id="checkout-name" name="checkout-name" placeholder="Ej: Carolina Gómez" required maxlength="80">
+      </div>
+
+      <div class="review-form-row">
+        <label for="checkout-phone">Teléfono de contacto</label>
+        <input type="tel" id="checkout-phone" name="checkout-phone" placeholder="Ej: 11 2345-6789" required maxlength="30">
+      </div>
+
+      <div class="review-form-row">
+        <label for="checkout-address">Domicilio de entrega</label>
+        <input type="text" id="checkout-address" name="checkout-address" placeholder="Calle, número, piso/depto, localidad" required maxlength="160">
+      </div>
+
+      <div class="review-form-row">
+        <label>Horario de preferencia</label>
+        <div class="checkout-radio-row">
+          <label class="checkout-radio-option">
+            <input type="radio" name="checkout-time" value="Mañana" required>
+            <span>Mañana</span>
+          </label>
+          <label class="checkout-radio-option">
+            <input type="radio" name="checkout-time" value="Tarde">
+            <span>Tarde</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="review-form-row">
+        <label for="checkout-payment">Medio de pago</label>
+        <select id="checkout-payment" name="checkout-payment" required>
+          <option value="" disabled selected>Elegí una opción</option>
+          <option value="Transferencia bancaria">Transferencia bancaria</option>
+          <option value="Efectivo">Efectivo</option>
+          <option value="Tarjeta de débito/crédito">Tarjeta de débito/crédito</option>
+        </select>
+      </div>
+
+      <p class="review-form-error" id="checkout-form-error" hidden>Completá todos los campos antes de continuar.</p>
+
+      <button type="submit" class="hero-cta checkout-submit">Confirmar y enviar por WhatsApp</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== MODAL: detalle de pack ===== -->
+<div class="modal-overlay" id="pack-overlay" hidden></div>
+<div class="pack-modal" id="pack-modal" role="dialog" aria-modal="true" aria-labelledby="pack-modal-title" aria-hidden="true">
+  <button class="modal-close" id="pack-modal-close" type="button" aria-label="Cerrar detalle">✕</button>
+
+  <div class="pack-modal-inner">
+    <span class="product-badge modal-badge" id="pack-modal-badge" hidden></span>
+    <h2 class="modal-name" id="pack-modal-title">Nombre del pack</h2>
+    <p class="modal-desc" id="pack-modal-desc">Descripción del pack.</p>
+
+    <p class="pack-modal-includes-label">Este pack incluye</p>
+    <div class="pack-modal-grid" id="pack-modal-grid">
+      <!-- miniaturas de velas/cartas incluidas, renderizadas vía JS -->
+    </div>
+
+    <div class="modal-bottom">
+      <p class="modal-price" id="pack-modal-price">$0</p>
+    </div>
+
+    <button class="hero-cta modal-add" id="pack-modal-add-btn" type="button">Agregar al carrito</button>
   </div>
 </div>
 
@@ -189,8 +273,8 @@
           </svg>
         </span>
         <div class="perk-text">
-          <p class="perk-title">Envío sin cargo en Buenos Aires</p>
-          <p class="perk-desc">Llegamos a cualquier punto de Buenos Aires sin costo de envío en compras desde $50.000.</p>
+          <p class="perk-title">Envío a todo Buenos Aires</p>
+          <p class="perk-desc">Llegamos a cualquier punto de Buenos Aires en compras desde $40.000. Entrega estimada: 3 a 5 días hábiles desde confirmada la compra.</p>
         </div>
       </div>
 
@@ -462,7 +546,9 @@
 
     <div class="packs-grid">
 
-      <article class="pack-card">
+      <article class="pack-card"
+        data-desc="Para quien quiere empezar sin tener que elegir entre todo el catálogo: una selección curada de 3 velas que combinan bien entre sí, más un mazo para abrir el ritual."
+        data-includes="Memento|thumb-skull|Vigilia|thumb-classic|Luna Vieja|thumb-moon||Rider-Waite Clásico|carta-thumb-rider">
         <span class="pack-badge">Más elegido</span>
         <h3 class="pack-name">Pack Inicio</h3>
         <p class="pack-detail">3 velas a elección + 1 mazo de cartas</p>
@@ -470,14 +556,18 @@
         <button class="hero-cta pack-cta" type="button">Consultar este pack</button>
       </article>
 
-      <article class="pack-card">
+      <article class="pack-card"
+        data-desc="El combo para armar un altar completo de una sola vez: 6 piezas que recorren todas las formas de la colección, más el mazo que más se ajuste a lo que estés buscando trabajar."
+        data-includes="Memento|thumb-skull|Ofrenda|thumb-hand|Luna Vieja|thumb-moon|Babel|thumb-spiral|Vigilia|thumb-classic|Eclipse|thumb-moon-2||Ciclos Lunares|carta-thumb-moon">
         <h3 class="pack-name">Pack Altar Completo</h3>
         <p class="pack-detail">6 velas de la colección + 1 mazo de cartas a elección</p>
         <p class="pack-price">$58.000 <span class="pack-was">$71.000</span></p>
         <button class="hero-cta pack-cta" type="button">Consultar este pack</button>
       </article>
 
-      <article class="pack-card">
+      <article class="pack-card"
+        data-desc="Pensado para reventa o eventos: 12 velas surtidas que cubren todas las formas y tamaños del catálogo, con buen margen para revender por unidad."
+        data-includes="Memento|thumb-skull|Ofrenda|thumb-hand|Luna Vieja|thumb-moon|Babel|thumb-spiral|Vigilia|thumb-classic|Cráneo de Sal|thumb-skull-2|Voto|thumb-hand-2|Eclipse|thumb-moon-2|Ouroboros|thumb-spiral-2|Vela del Viajero|thumb-classic-2|Sombra Dulce|thumb-skull|Plegaria|thumb-hand">
         <span class="pack-badge">Mayorista</span>
         <h3 class="pack-name">Pack Revendedor</h3>
         <p class="pack-detail">12 velas surtidas, ideal para reventa o eventos</p>
@@ -498,7 +588,7 @@
 <!-- ===== HISTORIA ===== -->
 <section class="history" id="historia">
   <div class="history-inner">
-    <p class="hero-eyebrow">Nuestro oficio</p>
+    <p class="hero-eyebrow">Nuestra historia</p>
     <h2 class="history-title">No moldeamos cera.<br>Le damos un propósito.</h2>
     <p class="history-text">
       Cada forma de nuestro catálogo nace de un molde propio, tallado a mano
@@ -540,12 +630,27 @@
           </g>
         </svg>
       </span>
-      <span class="brand-name">Messina</span>
+      <span class="brand-name">Messina's name</span>
     </div>
     <p class="footer-text">Velas de autor, hechas a mano, en ediciones que no se repiten.</p>
-    <p class="footer-copy">© 2026 Messina · Packs y pedidos a medida: hola@messina-velas.com</p>
+    <p class="footer-copy">© 2026 Messina's name</p>
+    <p class="footer-credit">Sitio creado por Carolina Gómez</p>
   </div>
 </footer>
+
+<!-- ===== WHATSAPP FLOTANTE ===== -->
+<a
+  href="https://wa.me/5491168554861?text=Hola%20Messina's%20name%2C%20quiero%20hacer%20una%20consulta"
+  class="whatsapp-float"
+  target="_blank"
+  rel="noopener"
+  aria-label="Escribinos por WhatsApp"
+>
+  <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+    <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.48-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.6-.91-2.2-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35Z"/>
+    <path d="M12.04 2C6.58 2 2.13 6.42 2.13 11.87c0 1.85.5 3.58 1.36 5.07L2 22l5.21-1.45a9.9 9.9 0 0 0 4.83 1.24h.01c5.46 0 9.9-4.42 9.9-9.87C21.96 6.42 17.5 2 12.04 2Zm0 18.05h-.01a8.16 8.16 0 0 1-4.16-1.14l-.3-.18-3.09.86.83-3-.2-.31a8.13 8.13 0 0 1-1.27-4.4c0-4.5 3.68-8.16 8.21-8.16 2.19 0 4.25.86 5.8 2.4a8.1 8.1 0 0 1 2.41 5.77c0 4.5-3.68 8.16-8.22 8.16Z"/>
+  </svg>
+</a>
 
 <script src="script.js"></script>
 </body>
